@@ -1,7 +1,7 @@
 import hassapi as hass
 import time
 from datetime import datetime
-import croniter
+from croniter import croniter
 
 #
 # App to control a plant irrigation system
@@ -30,7 +30,8 @@ class PlantIrrigation(hass.Hass):
     switch       = self.args['switch']
     cron         = self.args['cron']
     duration     = self.args['duration']
-    itr          = croniter(cron)
+    base         = datetime(2010, 1, 25, 4, 46)
+    itr          = croniter(cron, base)
     prev_time    = itr.get_prev(datetime)
     end_time     = prev_time + datetime.timedelta(seconds=duration)
     current_time = datetime.now()
