@@ -1,6 +1,7 @@
 import hassapi as hass
 import time
 from datetime import datetime
+import croniter
 
 #
 # App to control a plant irrigation system
@@ -17,17 +18,31 @@ class PlantIrrigation(hass.Hass):
 
   def initialize(self):
     # self.validate()
-    self.log('Feed me Seymore!')
+    while true:
+      self.time_trigger()
+      time.sleep(1)
 
-  ##################
+  ###########
+  # Handler #
+  ###########
+
+  def time_trigger(self):
+    switch       = self.args('switch')
+    cron         = self.args('cron')
+    duration     = self.args('duration')
+    itr          = croniter(cron)
+    prev_time    = itr.get_prev(datetime)
+    end_time     = prev_time + datetime.timedelta(seconds=duration)
+    current_time = datetime.now()
+    
+    if current_time >= prev_time and current_time <= end_time:
+      self.turn_on(switch)
+    else:
+      self.turn_off(switch)
+
+  ##################``
   # Button Actions #
   ##################
-
-  def on(self):
-    self.turn_on(self.args['entity'])
-
-  def off(self):
-    self.turn_off(self.args['entity'])
 
   ####################
   # Input Validation #
