@@ -18,7 +18,7 @@ class PlantIrrigation(hass.Hass):
 
   def initialize(self):
     # self.validate()
-    while true:
+    while True:
       self.time_trigger()
       time.sleep(1)
 
