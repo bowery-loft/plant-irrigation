@@ -18,22 +18,21 @@ class PlantIrrigation(hass.Hass):
 
   def initialize(self):
     # self.validate()
-    self.run_every(self, self.time_trigger, datetime.now(), 1)
+    self.run_every(self.time_trigger, datetime.now(), 1)
 
   ###########
   # Handler #
   ###########
 
-  def time_trigger(self):
+  def time_trigger(self, *kwargs):
     switch       = self.args['switch']
     cron         = self.args['cron']
     duration     = self.args['duration']
-    base         = datetime(2010, 1, 25, 4, 46)
-    itr          = croniter(cron, base)
+    itr          = croniter(cron)
     prev_time    = itr.get_prev(datetime)
     end_time     = prev_time + timedelta(seconds=duration)
-    current_time = datetime.now()
-    
+    current_time = datetime.utcnow()
+
     if current_time >= prev_time and current_time <= end_time:
       self.turn_on(switch)
     else:
