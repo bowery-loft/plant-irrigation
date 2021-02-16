@@ -18,9 +18,7 @@ class PlantIrrigation(hass.Hass):
 
   def initialize(self):
     # self.validate()
-    while True:
-      self.time_trigger()
-      time.sleep(1)
+    self.run_every(self, self.time_trigger, datetime.now(), 1)
 
   ###########
   # Handler #
@@ -33,7 +31,7 @@ class PlantIrrigation(hass.Hass):
     base         = datetime(2010, 1, 25, 4, 46)
     itr          = croniter(cron, base)
     prev_time    = itr.get_prev(datetime)
-    end_time     = prev_time + datetime.timedelta(seconds=duration)
+    end_time     = prev_time + timedelta(seconds=duration)
     current_time = datetime.now()
     
     if current_time >= prev_time and current_time <= end_time:
