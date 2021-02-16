@@ -27,9 +27,9 @@ class PlantIrrigation(hass.Hass):
   ###########
 
   def time_trigger(self):
-    switch       = self.args('switch')
-    cron         = self.args('cron')
-    duration     = self.args('duration')
+    switch       = self.args['switch']
+    cron         = self.args['cron']
+    duration     = self.args['duration']
     itr          = croniter(cron)
     prev_time    = itr.get_prev(datetime)
     end_time     = prev_time + datetime.timedelta(seconds=duration)
